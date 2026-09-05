@@ -45,7 +45,7 @@
                 </button>
                 <button class="case-btn" onclick="loadCase('CASE_05_AMBIGUOUS_BORDERLINE')">
                     <div class="btn-top">Case 05: Borderline Case</div>
-                    <div class="btn-sub">1 Mild Rule • Score ~25/100</div>
+                    <div class="btn-sub">2 Mild Rules • Score ~35/100</div>
                 </button>
             </div>
 
@@ -200,6 +200,16 @@
     <div class="modal-overlay hidden" id="jsonModal">
         <div class="modal-box">
             <h3>Paste Custom Transaction Case JSON</h3>
+
+                <div class="modal-hint">
+                    <button class="secondary-btn" onclick="loadSampleIntoModal()">
+                        📋 Load Sample JSON
+                    </button>
+                    <p class="hint-text">
+                        Not sure of the format? Click above to auto-fill a real working example you can edit.
+                    </p>
+                </div>
+
             <textarea id="customJsonInput" placeholder="Paste case JSON here..."></textarea>
             <div class="modal-actions">
                 <button class="secondary-btn" onclick="toggleCustomJsonModal()">Cancel</button>
