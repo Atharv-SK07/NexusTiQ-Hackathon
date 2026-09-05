@@ -1,0 +1,24 @@
+{
+  "case_id": "CASE_01_ROUTINE",
+  "customer": {
+    "customer_id": "CUST_1001",
+    "name": "Priya Sharma",
+    "account_type": "Savings Account",
+    "established_days": 450,
+    "avg_monthly_spend": 45000.00,
+    "typical_channels": ["upi_mobile", "debit_card"]
+  },
+  "payees": [
+    { "payee_id": "PAY_01", "name": "Tata Power Utility", "added_date": "2024-01-15" },
+    { "payee_id": "PAY_02", "name": "Delhi Jal Board", "added_date": "2024-02-01" },
+    { "payee_id": "PAY_03", "name": "Nature Basket Supermarket", "added_date": "2024-03-10" }
+  ],
+  "transactions": [
+    { "txn_id": "TXN_101", "date": "2026-08-01 09:15:00", "payee": "Nature Basket Supermarket", "amount": 3800.00, "channel": "debit_card", "description": "Grocery Purchase" },
+    { "txn_id": "TXN_102", "date": "2026-08-05 14:30:00", "payee": "Tata Power Utility", "amount": 4200.00, "channel": "upi_mobile", "description": "Electricity Bill Payment" },
+    { "txn_id": "TXN_103", "date": "2026-08-12 11:20:00", "payee": "Delhi Jal Board", "amount": 1850.00, "channel": "upi_mobile", "description": "Water Utility Bill" },
+    { "txn_id": "TXN_104", "date": "2026-08-18 19:45:00", "payee": "Nature Basket Supermarket", "amount": 2900.00, "channel": "debit_card", "description": "Grocery Purchase" },
+    { "txn_id": "TXN_105", "date": "2026-08-25 16:10:00", "payee": "Third Wave Coffee", "amount": 450.00, "channel": "upi_mobile", "description": "Café Payment" },
+    { "txn_id": "TXN_106", "date": "2026-09-01 10:00:00", "payee": "Nature Basket Supermarket", "amount": 5200.00, "channel": "debit_card", "description": "Weekly Groceries" }
+  ]
+}

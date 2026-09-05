@@ -1,0 +1,20 @@
+{
+  "case_id": "CASE_04_EDGE_CASE_MIXED",
+  "customer": {
+    "customer_id": "CUST_1004",
+    "name": "Rohan Verma",
+    "account_type": "Personal Savings",
+    "established_days": 310,
+    "avg_monthly_spend": 50000.00,
+    "typical_channels": ["debit_card", "upi_mobile"]
+  },
+  "payees": [
+    { "payee_id": "PAY_99", "name": "FastPay Forex Remittance", "added_date": "2026-09-02" }
+  ],
+  "transactions": [
+    { "txn_id": "TXN_401", "date": "2026-08-05 14:00:00", "payee": "Housing Society Maintenance", "amount": 18000.00, "channel": "debit_card", "description": "Rent Payment" },
+    { "txn_id": "TXN_402", "date": "2026-09-03 03:15:00", "payee": "FastPay Forex Remittance", "amount": 120000.00, "channel": "api_integration", "description": "Outbound Transfer" },
+    { "txn_id": "TXN_403", "date": "2026-09-03 03:22:00", "payee": "FastPay Forex Remittance", "amount": 140000.00, "channel": "api_integration", "description": "Outbound Transfer" },
+    { "txn_id": "TXN_404", "date": "2026-09-03 03:35:00", "payee": "FastPay Forex Remittance", "amount": 180000.00, "channel": "api_integration", "description": "Outbound Transfer" }
+  ]
+}

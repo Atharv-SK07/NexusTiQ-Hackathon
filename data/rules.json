@@ -1,0 +1,45 @@
+{
+  "rules": [
+    {
+      "rule_id": "RULE_01_LARGE_TRANSFER",
+      "rule_name": "Unusually Large Transfer",
+      "description": "Single transfer exceeding ₹1,50,000 INR or exceeding 3.5x customer's established average transaction amount.",
+      "severity": "HIGH",
+      "parameters": {
+        "absolute_threshold": 150000.0,
+        "multiplier_threshold": 3.5
+      }
+    },
+    {
+      "rule_id": "RULE_02_NEW_PAYEE_BURST",
+      "rule_name": "Rapid Payments to New Payee",
+      "description": "3 or more transactions sent to a payee registered within the past 7 days, occurring within a 24-hour window.",
+      "severity": "HIGH",
+      "parameters": {
+        "payee_age_days": 7,
+        "burst_count_threshold": 3,
+        "window_hours": 24
+      }
+    },
+    {
+      "rule_id": "RULE_03_ODD_HOURS_ACTIVITY",
+      "rule_name": "Odd-Hours High-Value Activity",
+      "description": "Transaction over ₹50,000 INR executed between 01:00 AM and 04:50 AM local time.",
+      "severity": "MEDIUM",
+      "parameters": {
+        "start_hour": 1,
+        "end_hour": 4,
+        "min_amount": 50000.0
+      }
+    },
+    {
+      "rule_id": "RULE_04_PATTERN_SHIFT",
+      "rule_name": "Behavioral Pattern Break",
+      "description": "Unusual payment channel or 5x daily transaction velocity jump compared to established baseline.",
+      "severity": "MEDIUM",
+      "parameters": {
+        "daily_velocity_multiplier": 5.0
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "case_id": "CASE_02_PAYEE_BURST",
+  "customer": {
+    "customer_id": "CUST_1002",
+    "name": "Aarav Mehta",
+    "account_type": "Salary Account",
+    "established_days": 600,
+    "avg_monthly_spend": 65000.00,
+    "typical_channels": ["upi_mobile", "net_banking"]
+  },
+  "payees": [
+    { "payee_id": "PAY_88", "name": "ZebPay Crypto Exchange", "added_date": "2026-09-03" },
+    { "payee_id": "PAY_05", "name": "Airtel Broadband", "added_date": "2024-05-12" }
+  ],
+  "transactions": [
+    { "txn_id": "TXN_201", "date": "2026-08-15 10:00:00", "payee": "Airtel Broadband", "amount": 1499.00, "channel": "upi_mobile", "description": "Bill Payment" },
+    { "txn_id": "TXN_202", "date": "2026-09-04 14:10:00", "payee": "ZebPay Crypto Exchange", "amount": 35000.00, "channel": "net_banking", "description": "Initial Wallet Funding" },
+    { "txn_id": "TXN_203", "date": "2026-09-04 15:45:00", "payee": "ZebPay Crypto Exchange", "amount": 55000.00, "channel": "net_banking", "description": "Secondary Wallet Funding" },
+    { "txn_id": "TXN_204", "date": "2026-09-04 17:30:00", "payee": "ZebPay Crypto Exchange", "amount": 75000.00, "channel": "net_banking", "description": "Third Wallet Transfer" },
+    { "txn_id": "TXN_205", "date": "2026-09-04 19:15:00", "payee": "ZebPay Crypto Exchange", "amount": 95000.00, "channel": "net_banking", "description": "Fourth Wallet Transfer" }
+  ]
+}

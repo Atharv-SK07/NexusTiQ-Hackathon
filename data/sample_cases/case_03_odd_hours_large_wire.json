@@ -1,0 +1,19 @@
+{
+  "case_id": "CASE_03_ODD_HOURS_LARGE_WIRE",
+  "customer": {
+    "customer_id": "CUST_1003",
+    "name": "Ananya Iyer",
+    "account_type": "Privilege Savings Account",
+    "established_days": 820,
+    "avg_monthly_spend": 85000.00,
+    "typical_channels": ["upi_mobile", "branch_atm"]
+  },
+  "payees": [
+    { "payee_id": "PAY_12", "name": "Vanguard International Forex", "added_date": "2026-08-20" }
+  ],
+  "transactions": [
+    { "txn_id": "TXN_301", "date": "2026-08-10 12:30:00", "payee": "Reliance Smart Superstore", "amount": 6200.00, "channel": "debit_card", "description": "Retail Purchase" },
+    { "txn_id": "TXN_302", "date": "2026-08-25 15:00:00", "payee": "Vanguard International Forex", "amount": 18000.00, "channel": "upi_mobile", "description": "Consulting Fee" },
+    { "txn_id": "TXN_303", "date": "2026-09-04 02:45:00", "payee": "Vanguard International Forex", "amount": 480000.00, "channel": "rtgs_wire_transfer", "description": "Urgent Forex Remittance" }
+  ]
+}

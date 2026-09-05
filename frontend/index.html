@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Transaction Risk Investigation Assistant - PS06</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-header">
+        <div class="header-left">
+            <div class="bank-logo">🛡️ NEXUS TRUST BANK</div>
+            <div class="header-title">
+                <h1>Transaction Risk Investigation Assistant</h1>
+                <span class="track-badge">TRACK_ID=PS06</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="model-badge">AI Core: <span>Gemini 3.5 Flash Lite</span></div>
+            <div class="status-indicator"><span class="dot green"></span> System Ready</div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Sidebar Controls -->
+        <aside class="sidebar">
+            <div class="section-title">Select Audit Case</div>
+            <div class="case-selector-group">
+                <button class="case-btn active" onclick="loadCase('CASE_01_ROUTINE')">
+                    <div class="btn-top">Case 01: Routine Account</div>
+                    <div class="btn-sub">Null Case • Zero Risk Flags</div>
+                </button>
+                <button class="case-btn" onclick="loadCase('CASE_02_PAYEE_BURST')">
+                    <div class="btn-top">Case 02: New Payee Burst</div>
+                    <div class="btn-sub">4 Rapid Transfers in 24h</div>
+                </button>
+                <button class="case-btn" onclick="loadCase('CASE_03_ODD_HOURS_LARGE_WIRE')">
+                    <div class="btn-top">Case 03: Odd-Hours Wire</div>
+                    <div class="btn-sub">$18.5k Transfer at 02:45 AM</div>
+                </button>
+                <button class="case-btn" onclick="loadCase('CASE_04_EDGE_CASE_MIXED')">
+                    <div class="btn-top">Case 04: Edge Case Mixed</div>
+                    <div class="btn-sub">Multiple Rule Overlaps</div>
+                </button>
+            </div>
+
+            <div class="section-title margin-top">Custom Input</div>
+            <button class="secondary-btn" onclick="toggleCustomJsonModal()">
+                📝 Paste Custom Case JSON
+            </button>
+
+            <div class="section-title margin-top">Risk Rules Standard</div>
+            <div class="rules-mini-list" id="rulesList">
+                <div class="rule-mini-item">RULE_01: Large Transfer (> ₹1.5L / 3.5x avg)</div>
+                <div class="rule-mini-item">RULE_02: New Payee Burst (≥3 in 24h)</div>
+                <div class="rule-mini-item">RULE_03: Odd-Hours Wire (01:00-04:50 IST)</div>
+                <div class="rule-mini-item">RULE_04: Behavioral Pattern Break</div>
+            </div>
+        </aside>
+
+        <!-- Content Body -->
+        <main class="content-body">
+            <!-- Customer Card -->
+            <div class="card customer-card" id="customerCard">
+                <div class="customer-info-grid">
+                    <div>
+                        <div class="label">Customer Name</div>
+                        <div class="val" id="custName">Loading...</div>
+                    </div>
+                    <div>
+                        <div class="label">Customer ID</div>
+                        <div class="val mono" id="custId">--</div>
+                    </div>
+                    <div>
+                        <div class="label">Account Type</div>
+                        <div class="val" id="custType">--</div>
+                    </div>
+                    <div>
+                        <div class="label">Established History</div>
+                        <div class="val" id="custTenure">--</div>
+                    </div>
+                    <div>
+                        <div class="label">90-Day Baseline Spend</div>
+                        <div class="val" id="custSpend">--</div>
+                    </div>
+                    <div>
+                        <div class="label">Typical Channels</div>
+                        <div class="val" id="custChannels">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Toolbar -->
+            <div class="toolbar">
+                <button class="primary-btn" id="runAuditBtn" onclick="runInvestigation()">
+                    ⚡ Run Investigation Audit
+                </button>
+                <div class="audit-status" id="auditStatus">Select a case and click Run Audit</div>
+            </div>
+
+            <!-- Report Output Card -->
+            <div class="card report-card hidden" id="reportCard">
+                <div class="report-header">
+                    <div class="report-header-left">
+                        <h2>Investigation Audit Report</h2>
+                        <span class="mode-tag" id="analysisModeTag">Grounded Hybrid Engine</span>
+                    </div>
+                    <div class="risk-meter" id="riskMeter">
+                        <div class="score-num" id="riskScore">--</div>
+                        <div class="score-label">RISK SCORE</div>
+                    </div>
+                </div>
+
+                <div class="alert-banner" id="statusBanner">
+                    <div class="banner-icon" id="bannerIcon">ℹ️</div>
+                    <div class="banner-content">
+                        <h3 id="bannerTitle">Status</h3>
+                        <p id="bannerDesc">Description</p>
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <h3>Executive Summary</h3>
+                    <p class="summary-text" id="execSummary">Loading summary...</p>
+                </div>
+
+                <div class="report-section" id="findingsSection">
+                    <h3>Detailed Evidence & Findings</h3>
+                    <div class="findings-list" id="findingsList">
+                        <!-- Dynamic findings inserted here -->
+                    </div>
+                </div>
+
+                <div class="report-section" id="nullCaseSection">
+                    <h3>Null Case Verification</h3>
+                    <div class="null-box" id="nullReasoning">
+                        All transaction histories conform to standard customer behavior. Zero rules triggered.
+                    </div>
+                </div>
+
+                <div class="report-section">
+                    <h3>Investigator Next Steps</h3>
+                    <div class="guidance-box" id="investigatorGuidance">
+                        Guidance details...
+                    </div>
+                </div>
+
+                <div class="legal-disclaimer">
+                    ⚖️ <strong>Regulatory & Safeguard Disclaimer:</strong> <span id="disclaimerText">This report presents evidence and pattern deviations for human investigator review. The system does NOT conclude that fraud has occurred.</span>
+                </div>
+
+                <div class="report-actions">
+                    <button class="action-btn escalate" onclick="handleInvestigatorAction('Escalated to Fraud Specialist')">
+                        🚨 Escalate to Human Investigator
+                    </button>
+                    <button class="action-btn verify" onclick="handleInvestigatorAction('Requested Customer Contact Verification')">
+                        📞 Request Customer Verification
+                    </button>
+                    <button class="action-btn approve" onclick="handleInvestigatorAction('Cleared as Routine Activity')">
+                        ✅ Mark as Routine / Passed
+                    </button>
+                </div>
+            </div>
+
+            <!-- Raw Transaction History Table -->
+            <div class="card table-card">
+                <div class="card-title">
+                    <h3>Input Transaction History Log</h3>
+                    <span class="txn-count" id="txnCount">0 Transactions</span>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>TXN ID</th>
+                                <th>Timestamp</th>
+                                <th>Payee</th>
+                                <th>Channel</th>
+                                <th>Description</th>
+                                <th class="text-right">Amount (INR ₹)</th>
+                                <th>Status Flag</th>
+                            </tr>
+                        </thead>
+                        <tbody id="txnTableBody">
+                            <tr><td colspan="7" class="text-center">Select a case to view transactions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom JSON Modal -->
+    <div class="modal-overlay hidden" id="jsonModal">
+        <div class="modal-box">
+            <h3>Paste Custom Transaction Case JSON</h3>
+            <textarea id="customJsonInput" placeholder="Paste case JSON here..."></textarea>
+            <div class="modal-actions">
+                <button class="secondary-btn" onclick="toggleCustomJsonModal()">Cancel</button>
+                <button class="primary-btn" onclick="submitCustomJson()">Load & Audit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
