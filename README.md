@@ -57,4 +57,4 @@ c:\NexusTiQ Hackathon\
 2. **Case 02 - Aarav Mehta (Payee Burst)**: Rapid transfers totaling `₹2,60,000` to newly registered payee *ZebPay Crypto Exchange* within 24h → **Score: 45/100** (1 High Rule).
 3. **Case 03 - Ananya Iyer (Odd-Hours Wire)**: High-value `₹4,80,000` RTGS transfer executed at 02:45 AM → **Score: 85/100** (1 High + 2 Medium Rules).
 4. **Case 04 - Rohan Verma (Edge Case Overlap)**: Multiple high-value outbound API transfers totaling `₹11,60,000` → **Score: 100/100** (2 High + 2 Medium Rules).
-5. **Case 05 - Vikram Malhotra (Ambiguous Stress Test)**: One-off `₹68,000` laptop purchase via NetBanking → **Score: 25/100** (1 Mild Medium Rule).
+5. **Case 05 - Vikram Malhotra (Ambiguous Stress Test)**: One-off `₹68,000` laptop purchase via NetBanking → **Score: 35/100** (1 Medium + 1 Low Rule).

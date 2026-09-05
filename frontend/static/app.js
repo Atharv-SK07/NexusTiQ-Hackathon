@@ -1,12 +1,10 @@
 let currentCaseData = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Automatically load default Case 01 Routine
     loadCase("CASE_01_ROUTINE");
 });
 
 async function loadCase(caseId) {
-    // Update button states
     document.querySelectorAll(".case-btn").forEach(btn => btn.classList.remove("active"));
     const activeBtn = Array.from(document.querySelectorAll(".case-btn")).find(b => b.getAttribute("onclick").includes(caseId));
     if (activeBtn) activeBtn.classList.add("active");
@@ -17,7 +15,7 @@ async function loadCase(caseId) {
     try {
         const response = await fetch(`/api/cases/${caseId}`);
         if (!response.ok) throw new Error("Failed to load case data");
-        
+
         currentCaseData = await response.json();
         renderCase(currentCaseData);
         document.getElementById("auditStatus").innerText = `Case ${caseId} loaded. Ready to run audit.`;
@@ -27,7 +25,6 @@ async function loadCase(caseId) {
 }
 
 function renderCase(data) {
-    // Customer profile
     document.getElementById("custName").innerText = data.customer.name;
     document.getElementById("custId").innerText = data.customer.customer_id;
     document.getElementById("custType").innerText = data.customer.account_type;
@@ -35,7 +32,6 @@ function renderCase(data) {
     document.getElementById("custSpend").innerText = `₹${data.customer.avg_monthly_spend.toLocaleString('en-IN')}/mo`;
     document.getElementById("custChannels").innerText = data.customer.typical_channels.join(", ");
 
-    // Transactions table
     const tbody = document.getElementById("txnTableBody");
     tbody.innerHTML = "";
     document.getElementById("txnCount").innerText = `${data.transactions.length} Transactions`;
@@ -97,31 +93,22 @@ function renderReport(report) {
     const reportCard = document.getElementById("reportCard");
     reportCard.classList.remove("hidden");
 
-    // Analysis Mode
     document.getElementById("analysisModeTag").innerText = report.analysis_mode || "Grounded Engine";
 
     // Risk Meter
     const scoreElem = document.getElementById("riskScore");
     scoreElem.innerText = `${report.risk_score}/100`;
     scoreElem.className = "score-num";
-    if (report.risk_score > 70) scoreElem.classList.add("high-risk");
-    else if (report.risk_score > 30) scoreElem.classList.add("med-risk");
+    if (report.risk_score >= 70) scoreElem.classList.add("high-risk");
+    else if (report.risk_score >= 30) scoreElem.classList.add("med-risk");
 
-    // Status Banner
+    // Status Banner — now tiered by actual risk_score, not just a true/false flag
     const banner = document.getElementById("statusBanner");
     const bannerIcon = document.getElementById("bannerIcon");
     const bannerTitle = document.getElementById("bannerTitle");
     const bannerDesc = document.getElementById("bannerDesc");
 
-    if (report.needs_attention) {
-        banner.className = "alert-banner flagged";
-        bannerIcon.innerText = "🚨";
-        bannerTitle.innerText = "ACTION REQUIRED: Suspicious Risk Pattern Flagged";
-        bannerDesc.innerText = "Deterministic rules and AI synthesis identified specific transaction anomalies needing human investigator review.";
-        
-        document.getElementById("findingsSection").classList.remove("hidden");
-        document.getElementById("nullCaseSection").classList.add("hidden");
-    } else {
+    if (!report.needs_attention) {
         banner.className = "alert-banner routine";
         bannerIcon.innerText = "✅";
         bannerTitle.innerText = "ROUTINE ACCOUNT: Zero Risk Flags Detected (Null Case)";
@@ -130,24 +117,42 @@ function renderReport(report) {
         document.getElementById("findingsSection").classList.add("hidden");
         document.getElementById("nullCaseSection").classList.remove("hidden");
         document.getElementById("nullReasoning").innerText = report.null_case_reasoning || "All transactions evaluated match normal customer history.";
+    } else if (report.risk_score < 30) {
+        banner.className = "alert-banner mild";
+        bannerIcon.innerText = "🟡";
+        bannerTitle.innerText = "MILD WARNING: Minor Variance Noted";
+        bannerDesc.innerText = "A low-severity deviation was detected. Likely routine, but logged for reference.";
+
+        document.getElementById("findingsSection").classList.remove("hidden");
+        document.getElementById("nullCaseSection").classList.add("hidden");
+    } else if (report.risk_score < 70) {
+        banner.className = "alert-banner moderate";
+        bannerIcon.innerText = "🟠";
+        bannerTitle.innerText = "MODERATE RISK: Review Recommended";
+        bannerDesc.innerText = "Deterministic rules identified transaction anomalies worth a closer look.";
+
+        document.getElementById("findingsSection").classList.remove("hidden");
+        document.getElementById("nullCaseSection").classList.add("hidden");
+    } else {
+        banner.className = "alert-banner flagged";
+        bannerIcon.innerText = "🚨";
+        bannerTitle.innerText = "ACTION REQUIRED: Suspicious Risk Pattern Flagged";
+        bannerDesc.innerText = "Deterministic rules and AI synthesis identified specific transaction anomalies needing human investigator review.";
+
+        document.getElementById("findingsSection").classList.remove("hidden");
+        document.getElementById("nullCaseSection").classList.add("hidden");
     }
 
-    // Exec Summary
     document.getElementById("execSummary").innerText = report.executive_summary;
-
-    // Guidance
     document.getElementById("investigatorGuidance").innerText = report.investigator_guidance;
 
-    // Disclaimer
     if (report.disclaimer) {
         document.getElementById("disclaimerText").innerText = report.disclaimer;
     }
 
-    // Render Findings List & Highlight Rows
     const findingsList = document.getElementById("findingsList");
     findingsList.innerHTML = "";
 
-    // Clear previous row highlights
     document.querySelectorAll("#txnTableBody tr").forEach(row => {
         row.style.backgroundColor = "";
     });
@@ -156,7 +161,7 @@ function renderReport(report) {
         report.findings.forEach(f => {
             const item = document.createElement("div");
             item.className = "finding-item";
-            
+
             const citedTags = f.cited_transaction_ids.map(id => `<span class="cited-tag">TXN #${id}</span>`).join(" ");
 
             item.innerHTML = `
@@ -173,7 +178,6 @@ function renderReport(report) {
             `;
             findingsList.appendChild(item);
 
-            // Highlight cited transactions in table
             f.cited_transaction_ids.forEach(tid => {
                 const row = document.getElementById(`row-${tid}`);
                 if (row) {
@@ -187,12 +191,23 @@ function renderReport(report) {
         });
     }
 
-    // Scroll to report card smoothly
     reportCard.scrollIntoView({ behavior: "smooth" });
 }
 
 function handleInvestigatorAction(actionText) {
     alert(`Action Recorded: ${actionText}\nCase status updated in Audit Trail.`);
+}
+
+async function loadSampleIntoModal() {
+    try {
+        const response = await fetch(`/api/cases/CASE_01_ROUTINE`);
+        if (!response.ok) throw new Error("Failed to load sample case");
+        const sampleData = await response.json();
+        document.getElementById("customJsonInput").value =
+            JSON.stringify(sampleData, null, 2);
+    } catch (err) {
+        alert(`Error loading sample: ${err.message}`);
+    }
 }
 
 function toggleCustomJsonModal() {
