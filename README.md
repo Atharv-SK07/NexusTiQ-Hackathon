@@ -7,7 +7,7 @@ An intelligent, grounded fraud investigation assistant for a bank's fraud desk b
 The system analyzes customer transaction history over several months against standard banking risk rules (unusually large transfers, rapid payments to newly registered payees, odd-hours high-value transfers, and behavioral channel breaks). It combines a deterministic rule engine with Gemini 3.5 Flash Lite (`google-genai` SDK) to generate grounded, traceable investigation reports.
 
 ## Demo Video Link
-- **Demo Video**: [Insert Your 5-Minute YouTube / Loom Demo Link Here]
+- **Demo Video**: [Watch on Loom](https://www.loom.com/share/e8051294bf124d0cab438d747cd20b79)
 
 ## Key Features
 - **Deterministic Rule Verification**: Flags specific transactions based on quantifiable risk thresholds.
