@@ -40,6 +40,16 @@
       "parameters": {
         "daily_velocity_multiplier": 5.0
       }
+    },
+    {
+      "rule_id": "RULE_05_MINOR_SPEND_VARIANCE",
+      "rule_name": "Minor Spend Variance",
+      "description": "Single transaction amount between 2.0x and 3.4x customer's historical average single transaction amount.",
+      "severity": "LOW",
+      "parameters": {
+        "min_multiplier": 2.0,
+        "max_multiplier": 3.4
+      }
     }
   ]
 }

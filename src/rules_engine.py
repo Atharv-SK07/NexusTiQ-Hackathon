@@ -21,7 +21,7 @@ class RulesEngine:
         avg_txn_amount = sum(amounts) / total_txns if total_txns > 0 else 0.0
 
         # -------------------------------------------------------------
-        # Rule 1: Unusually Large Transfer
+        # Rule 1: Unusually Large Transfer (HIGH)
         # -------------------------------------------------------------
         rule_1 = self.rules.get("RULE_01_LARGE_TRANSFER")
         if rule_1:
@@ -55,7 +55,7 @@ class RulesEngine:
                 ))
 
         # -------------------------------------------------------------
-        # Rule 2: Rapid Payments to New Payee
+        # Rule 2: Rapid Payments to New Payee (HIGH)
         # -------------------------------------------------------------
         rule_2 = self.rules.get("RULE_02_NEW_PAYEE_BURST")
         if rule_2:
@@ -126,7 +126,7 @@ class RulesEngine:
                 ))
 
         # -------------------------------------------------------------
-        # Rule 3: Odd-Hours High-Value Activity
+        # Rule 3: Odd-Hours High-Value Activity (MEDIUM)
         # -------------------------------------------------------------
         rule_3 = self.rules.get("RULE_03_ODD_HOURS_ACTIVITY")
         if rule_3:
@@ -160,7 +160,7 @@ class RulesEngine:
                 ))
 
         # -------------------------------------------------------------
-        # Rule 4: Behavioral Pattern Break
+        # Rule 4: Behavioral Pattern Break (MEDIUM)
         # -------------------------------------------------------------
         rule_4 = self.rules.get("RULE_04_PATTERN_SHIFT")
         if rule_4:
@@ -186,4 +186,36 @@ class RulesEngine:
                     baseline_comparison=f"Customer established channel preferences: {', '.join(customer.typical_channels)}."
                 ))
 
+        # -------------------------------------------------------------
+        # Rule 5: Minor Spend Variance (LOW)
+        # -------------------------------------------------------------
+        rule_5 = self.rules.get("RULE_05_MINOR_SPEND_VARIANCE")
+        if rule_5 and not rule_1_triggered(findings):
+            min_m = rule_5.parameters.get("min_multiplier", 2.0)
+            max_m = rule_5.parameters.get("max_multiplier", 3.4)
+            flagged_txns_r5 = []
+            r5_explanations = []
+
+            for t in txns:
+                if avg_txn_amount > 0 and (min_m * avg_txn_amount <= t.amount <= max_m * avg_txn_amount):
+                    flagged_txns_r5.append(t.txn_id)
+                    r5_explanations.append(
+                        f"Transaction {t.txn_id} of ₹{t.amount:,.2f} is {t.amount / avg_txn_amount:.1f}x customer average (between 2.0x and 3.4x)."
+                    )
+
+            if flagged_txns_r5:
+                findings.append(DeterministicFinding(
+                    rule_id=rule_5.rule_id,
+                    rule_name=rule_5.rule_name,
+                    severity=rule_5.severity,
+                    triggered=True,
+                    cited_transaction_ids=flagged_txns_r5,
+                    explanation="; ".join(r5_explanations),
+                    baseline_comparison=f"Customer typical transaction size is ₹{avg_txn_amount:,.2f}."
+                ))
+
         return findings
+
+
+def rule_1_triggered(findings: List[DeterministicFinding]) -> bool:
+    return any(f.rule_id == "RULE_01_LARGE_TRANSFER" for f in findings)
