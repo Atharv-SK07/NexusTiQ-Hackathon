@@ -1,0 +1,19 @@
+{
+  "case_id": "CASE_05_AMBIGUOUS_BORDERLINE",
+  "customer": {
+    "customer_id": "CUST_1005",
+    "name": "Vikram Malhotra",
+    "account_type": "Personal Savings",
+    "established_days": 520,
+    "avg_monthly_spend": 75000.00,
+    "typical_channels": ["upi_mobile", "debit_card"]
+  },
+  "payees": [
+    { "payee_id": "PAY_33", "name": "Reliance Digital Electronics", "added_date": "2024-06-10" }
+  ],
+  "transactions": [
+    { "txn_id": "TXN_501", "date": "2026-08-10 11:00:00", "payee": "Swiggy Food Delivery", "amount": 650.00, "channel": "upi_mobile", "description": "Food Delivery" },
+    { "txn_id": "TXN_502", "date": "2026-08-20 14:15:00", "payee": "Croma Electronics", "amount": 12500.00, "channel": "debit_card", "description": "Gadget Purchase" },
+    { "txn_id": "TXN_503", "date": "2026-09-04 14:30:00", "payee": "Reliance Digital Electronics", "amount": 68000.00, "channel": "net_banking", "description": "One-off Laptop Purchase" }
+  ]
+}
